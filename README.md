@@ -1,0 +1,148 @@
+# NAME
+
+Algorithm::GLPK::GLPsol - lame interface to the great Gnu Linear Programming Kit solver, GLPK and glpsol
+
+# VERSION
+
+Version 0.01
+
+# SYNOPSIS
+
+GNU provides a Linear Programming solver at [https://www.gnu.org/software/glpk/](https://www.gnu.org/software/glpk/).
+GLPK stands for Gnu Linear Programming Kit and it is a prerequisite
+to the current module. Make sure you have the developer version
+of GLPK via your package manager or from [source](https://ftp.gnu.org/gnu/glpk/).
+The author of GLPK is Andrew Makhorin, [mao@gnu.org](https://metacpan.org/pod/mao%40gnu.org).
+
+In addition to being great and of great help it is also free and open source
+in the great GNU tradition.
+And in the UNIX tradition too although GNU is not UNIX :)
+
+The current module provides an XS interface to GLPK's `glpsol`
+executable but without calling the executable itself, via `system()`
+or `exec()`. Instead we lamely built an XS interface to `glpsol`
+which it takes in command-line args exactly how `glpsol` would
+and runs it. That means that the input program and the output solution
+are files and not strings which are passed in and returned back
+from [glpsol](https://metacpan.org/pod/glpsol). That would be ideal of course but GLPK's [API](https://most.ccib.rutgers.edu/glpk.pdf) is too
+complex for me to decypher and understand how to tell it
+to create a program using GLPK's [API](https://most.ccib.rutgers.edu/glpk.pdf).
+
+See [RELATED](https://metacpan.org/pod/RELATED) for information about
+a **proper** porting of GLPK's API to Perl/PDL
+with [PDL::Opt::GLPK](https://metacpan.org/pod/PDL%3A%3AOpt%3A%3AGLPK).
+
+Example usage:
+
+    use Algorithm::GLPK::GLPsol;
+
+    my $ret = Algorithm::GLPK::GLPsol::glpsol(
+      [
+        '-m', 'input-program.mod',
+        '-o', 'output.sol'
+      ],
+      # optional verbosity level as integer >= 0 (0 means mute)
+      $VERBOSITY
+    );
+    die unless $ret == 0;
+    # you can read the solution from output  file ... lame I know!
+
+    ...
+
+# EXPORT
+
+This module can export these:
+
+- [glpsol](https://metacpan.org/pod/glpsol) : e.g. `use Algorithm::GLPK::GLPsol qw/glpsol/;`
+
+# SUBROUTINES
+
+## glpsol
+
+`glpsol(['-m', 'inprogram.mod', '-o' 'out.sol'], $VERBOSITY) or die;`
+
+It calls `glpsol` with the specified command-line
+arguments to GLPK's `glpsol` executable as an ARRAY\_REF
+as the first parameter and, optionally, an integer
+denoting the verbosity level as the second parameter.
+
+`glpsol()` is an XS sub which calls GLPK's `glpsol` command.
+It is not as lame as calling it via `system()` or `exec()`
+but it does not use GLPK's [API](https://most.ccib.rutgers.edu/glpk.pdf) which would have been the most
+preferable way to do this. The reason being that I do not know
+how an LP program in GNU's MathProg can be translated to
+API calls. It is too complex for me at the moment.
+
+So, logically, this way
+should be faster than calling the `glpsol` executable via
+a `system()` call but slower (?) than doing it with API calls.
+Having said that, I have not benchmarked this claim.
+
+The most time consuming task is to write your program to a file before
+passing it to [glpsol()](https://metacpan.org/pod/glpsol%28%29) and then reading the output solution from
+file.
+
+### `glpsol` COMMAND ARGS
+
+All the command line options to [glpsol()](https://metacpan.org/pod/glpsol%28%29)
+are documented here
+[https://en.wikibooks.org/wiki/GLPK/Using\_GLPSOL](https://en.wikibooks.org/wiki/GLPK/Using_GLPSOL)
+
+### RETURN
+
+It returns `1` on failure, `0` on success.
+
+# AUTHOR
+
+Andreas Hadjiprocopis, `<bliako at cpan.org>`
+
+# BUGS
+
+Please report any bugs or feature requests to `bug-algorithm-glpk-glpsol at rt.cpan.org`, or through
+the web interface at [https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Algorithm-GLPK-GLPsol](https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Algorithm-GLPK-GLPsol).  I will be notified, and then you'll
+automatically be notified of progress on your bug as I make changes.
+
+# RELATED
+
+There is a **proper** port of GLPK to Perl/PDL provided by
+[Jörg Sommrey](https://metacpan.org/author/SOMMREY)
+published as [PDL::Opt::GLPK](https://metacpan.org/pod/PDL%3A%3AOpt%3A%3AGLPK).
+
+As far as I can understand,
+[PDL::Opt::GLPK](https://metacpan.org/pod/PDL%3A%3AOpt%3A%3AGLPK) does not accept [MathProg](https://iuuk.mff.cuni.cz/~bohm/texts/mathprog_intro.html)
+programs but it requires that the problem be specified with
+[PDL](https://metacpan.org/pod/PDL) matrices.
+
+# SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc Algorithm::GLPK::GLPsol
+
+You can also look for information at:
+
+- RT: CPAN's request tracker (report bugs here)
+
+    [https://rt.cpan.org/NoAuth/Bugs.html?Dist=Algorithm-GLPK-GLPsol](https://rt.cpan.org/NoAuth/Bugs.html?Dist=Algorithm-GLPK-GLPsol)
+
+- CPAN Ratings
+
+    [https://cpanratings.perl.org/d/Algorithm-GLPK-GLPsol](https://cpanratings.perl.org/d/Algorithm-GLPK-GLPsol)
+
+- Search CPAN
+
+    [https://metacpan.org/release/Algorithm-GLPK-GLPsol](https://metacpan.org/release/Algorithm-GLPK-GLPsol)
+
+- PerlMonks!
+
+    [https://perlmonks.org/](https://perlmonks.org/)
+
+# ACKNOWLEDGEMENTS
+
+# LICENSE AND COPYRIGHT
+
+This software is Copyright (c) 2026 by Andreas Hadjiprocopis.
+
+This is free software, licensed under:
+
+    The Artistic License 2.0 (GPL Compatible)
