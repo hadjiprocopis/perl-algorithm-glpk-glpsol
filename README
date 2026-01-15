@@ -1,7 +1,7 @@
 NAME
 
     Algorithm::GLPK::GLPsol - lame interface to the great Gnu Linear
-    Programming Kit solver, GLPK and glpsol
+    Programming Kit solver, GLPK, and glpsol
 
 VERSION
 
@@ -110,6 +110,9 @@ RELATED
     As far as I can understand, PDL::Opt::GLPK does not accept MathProg
     <https://iuuk.mff.cuni.cz/~bohm/texts/mathprog_intro.html> programs but
     it requires that the problem be specified with PDL matrices.
+
+    Also, see this thread at PerlMonks
+    <https://www.perlmonks.org/?node_id=11157732>.
 
 SUPPORT
 

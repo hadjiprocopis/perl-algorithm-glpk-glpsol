@@ -23,7 +23,7 @@ XSLoader::load("Algorithm::GLPK::GLPsol", $VERSION);
 
 =head1 NAME
 
-Algorithm::GLPK::GLPsol - lame interface to the great Gnu Linear Programming Kit solver, GLPK and glpsol
+Algorithm::GLPK::GLPsol - lame interface to the great Gnu Linear Programming Kit solver, GLPK, and glpsol
 
 =head1 VERSION
 
@@ -141,6 +141,8 @@ As far as I can understand,
 L<PDL::Opt::GLPK> does not accept L<MathProg|https://iuuk.mff.cuni.cz/~bohm/texts/mathprog_intro.html>
 programs but it requires that the problem be specified with
 L<PDL> matrices.
+
+Also, see this thread at L<PerlMonks|https://www.perlmonks.org/?node_id=11157732>.
 
 
 =head1 SUPPORT
